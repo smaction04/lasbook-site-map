@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>라스북 오프라인 매장 부지소싱 후보 9곳</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #f4ecdc;
+    --card-bg: #efe4cf;
+    --card-bg-2: #e7dabc;
+    --text: #2b2620;
+    --sub: #5a5245;
+    --accent: #b98a3d;
+    --badge-bg: #d8c48a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Pretendard", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .sub {
+    color: var(--sub);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  #map {
+    width: 100%;
+    height: 460px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #d8cba5;
+  }
+  #selected-info {
+    background: #fffaf0;
+    border: 1.5px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  #selected-info.empty {
+    border-style: dashed;
+    color: var(--sub);
+    font-style: normal;
+  }
+  #selected-info .sel-label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  #selected-info .sel-name {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 24px 0 12px;
+  }
+  .section-title .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .count {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--sub);
+    font-weight: 400;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 16px 18px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: #c9b482; }
+  .card.tier2 { background: var(--card-bg-2); }
+  .card.active { border-color: var(--accent); }
+  .num {
+    font-size: 13px;
+    color: var(--sub);
+    margin-bottom: 6px;
+  }
+  .name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .badge {
+    display: inline-block;
+    background: var(--badge-bg);
+    color: #4a3d1f;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--sub);
+    margin-top: 24px;
+  }
+  .leaflet-popup-content { font-size: 12.5px; line-height: 1.5; }
+  .leaflet-popup-content b { font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<h1>라스북 오프라인 매장 부지소싱 — 후보 9곳</h1>
+<div class="sub">이미지 원문 그대로 옮김 · 지도 핀은 참고용 근사 위치</div>
+
+<div id="map"></div>
+
+<div id="selected-info" class="empty">지도 핀이나 아래 카드를 클릭하면 선택한 위치 정보가 여기 표시됩니다.</div>
+
+<div class="section-title"><span class="dot"></span>1순위<span class="count">5곳</span></div>
+<div class="grid">
+  <div class="card" data-num="01" id="card-01">
+    <div class="num">01</div>
+    <div class="name">전북 전주 혁신도시</div>
+    <div class="desc">대방디엠시티 일대 · 1,600세대+ 고정수요, 메가박스·키즈카페·병원 기입점. 렌트프리 협상 여지 있음.</div>
+  </div>
+  <div class="card" data-num="02" id="card-02">
+    <div class="num">02</div>
+    <div class="name">경남 창원 중동</div>
+    <div class="desc">유니시티 무동지구 · 스트리트형 상가 141개 점포가 이미 조성된 주거배후형 상권.</div>
+  </div>
+  <div class="card" data-num="03" id="card-03">
+    <div class="num">03</div>
+    <div class="name">세종 나성동</div>
+    <div class="desc">어반아트리움 일대 · 3,500세대+정부청사 상주인구, "문화상업공간" 컨셉이 교습·상담 기능과 결이 맞음.</div>
+  </div>
+  <div class="card" data-num="04" id="card-04">
+    <div class="num">04</div>
+    <div class="name">충남 아산 배방읍</div>
+    <div class="desc">전국 아동인구 4위(6,447명) · 인구 10만 돌파(2026.2월 기준), 학교시설 밀집 학령인구 중심지. <span class="badge">신규 발견</span></div>
+  </div>
+  <div class="card" data-num="05" id="card-05">
+    <div class="num">05</div>
+    <div class="name">경남 김해 장유3동</div>
+    <div class="desc">전국 아동인구 5위(6,289명) · 부산·창원·마산·진해 광역 배후수요.</div>
+  </div>
+</div>
+
+<div class="section-title"><span class="dot"></span>2순위<span class="count">4곳</span></div>
+<div class="grid">
+  <div class="card tier2" data-num="06" id="card-06">
+    <div class="num">06</div>
+    <div class="name">충북 청주 테크노폴리스</div>
+    <div class="desc">산업단지 종사자 포함 배후 약 2만5천명.</div>
+  </div>
+  <div class="card tier2" data-num="07" id="card-07">
+    <div class="num">07</div>
+    <div class="name">부산 명지국제신도시</div>
+    <div class="desc">계획인구 8만 · 영화관·서점·카페 스트리트몰.</div>
+  </div>
+  <div class="card tier2" data-num="08" id="card-08">
+    <div class="num">08</div>
+    <div class="name">부산 정관신도시</div>
+    <div class="desc">신세계프리미엄아울렛 배후 · 신도시 배후수요 탄탄.</div>
+  </div>
+  <div class="card tier2" data-num="09" id="card-09">
+    <div class="num">09</div>
+    <div class="name">대전 유성구 테크노밸리</div>
+    <div class="desc">현대프리미엄아울렛 배후 · 테크노밸리·대학가 배후수요.</div>
+  </div>
+</div>
+
+<div class="note">지도 좌표는 각 지역 대표 지점(동/읍 행정중심)을 기준으로 한 근사치입니다. 정확한 필지 위치는 별도 확인이 필요합니다.</div>
+
+<script>
+  var map = L.map('map').setView([36.2, 127.8], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  var tier1Icon = L.divIcon({
+    className: '',
+    html: '<div style="background:#b98a3d;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);">%NUM%</div>',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13]
+  });
+  var tier2Icon = L.divIcon({
+    className: '',
+    html: '<div style="background:#7a8a6a;color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);">%NUM%</div>',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
+
+  function makeIcon(base, num) {
+    return L.divIcon({
+      className: '',
+      html: base.options.html.replace('%NUM%', num),
+      iconSize: base.options.iconSize,
+      iconAnchor: base.options.iconAnchor
+    });
+  }
+
+  var spots = [
+    { num: "01", tier: 1, name: "전북 전주 혁신도시", lat: 35.8214, lng: 127.1088, desc: "대방디엠시티 일대 · 1,600세대+ 고정수요, 메가박스·키즈카페·병원 기입점. 렌트프리 협상 여지 있음." },
+    { num: "02", tier: 1, name: "경남 창원 중동", lat: 35.2281, lng: 128.6811, desc: "유니시티 무동지구 · 스트리트형 상가 141개 점포가 이미 조성된 주거배후형 상권." },
+    { num: "03", tier: 1, name: "세종 나성동", lat: 36.5040, lng: 127.2494, desc: "어반아트리움 일대 · 3,500세대+정부청사 상주인구." },
+    { num: "04", tier: 1, name: "충남 아산 배방읍", lat: 36.7767, lng: 127.0140, desc: "전국 아동인구 4위(6,447명) · 인구 10만 돌파(2026.2월). [신규 발견]" },
+    { num: "05", tier: 1, name: "경남 김해 장유3동", lat: 35.1911, lng: 128.7885, desc: "전국 아동인구 5위(6,289명) · 부산·창원·마산·진해 광역 배후수요." },
+    { num: "06", tier: 2, name: "충북 청주 테크노폴리스", lat: 36.6205, lng: 127.4092, desc: "산업단지 종사자 포함 배후 약 2만5천명." },
+    { num: "07", tier: 2, name: "부산 명지국제신도시", lat: 35.0824, lng: 128.9186, desc: "계획인구 8만 · 영화관·서점·카페 스트리트몰." },
+    { num: "08", tier: 2, name: "부산 정관신도시", lat: 35.3333, lng: 129.2167, desc: "신세계프리미엄아울렛 배후 · 신도시 배후수요 탄탄." },
+    { num: "09", tier: 2, name: "대전 유성구 테크노밸리", lat: 36.4046, lng: 127.3097, desc: "현대프리미엄아울렛 배후 · 테크노밸리·대학가 배후수요." }
+  ];
+
+  var markersByNum = {};
+  var infoBox = document.getElementById('selected-info');
+
+  function selectSpot(num) {
+    var s = spots.find(function(x) { return x.num === num; });
+    if (!s) return;
+
+    infoBox.classList.remove('empty');
+    infoBox.innerHTML =
+      '<div class="sel-label">선택한 위치 · ' + (s.tier === 1 ? '1순위' : '2순위') + '</div>' +
+      '<div class="sel-name">' + s.num + '. ' + s.name + '</div>' +
+      '<div>' + s.desc + '</div>';
+
+    document.querySelectorAll('.card').forEach(function(c) { c.classList.remove('active'); });
+    var card = document.getElementById('card-' + num);
+    if (card) {
+      card.classList.add('active');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    var marker = markersByNum[num];
+    if (marker) {
+      map.panTo(marker.getLatLng());
+      marker.openPopup();
+    }
+  }
+
+  spots.forEach(function(s) {
+    var icon = makeIcon(s.tier === 1 ? tier1Icon : tier2Icon, s.num);
+    var marker = L.marker([s.lat, s.lng], { icon: icon }).addTo(map)
+      .bindPopup('<b>' + s.num + '. ' + s.name + '</b><br>' + s.desc);
+    marker.on('click', function() { selectSpot(s.num); });
+    markersByNum[s.num] = marker;
+  });
+
+  document.querySelectorAll('.card').forEach(function(card) {
+    card.addEventListener('click', function() { selectSpot(card.dataset.num); });
+  });
+</script>
+
+</body>
+</html>
