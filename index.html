@@ -164,7 +164,7 @@
 
 <div id="selected-info" class="empty">지도 핀이나 아래 카드를 클릭하면 선택한 위치 정보가 여기 표시됩니다.</div>
 
-<div class="section-title"><span class="dot"></span>3신호 겹침 · 최우선<span class="count">2곳</span></div>
+<div class="section-title"><span class="dot"></span>1순위<span class="count">2곳</span></div>
 <div class="grid">
   <div class="card" data-num="1-1" id="card-1-1">
     <div class="num">1-1</div>
@@ -180,7 +180,7 @@
   </div>
 </div>
 
-<div class="section-title tier2"><span class="dot"></span>2신호 겹침<span class="count">5곳</span></div>
+<div class="section-title tier2"><span class="dot"></span>2순위<span class="count">5곳</span></div>
 <div class="grid">
   <div class="card tier2" data-num="02" id="card-02">
     <div class="num">02</div>
@@ -214,7 +214,7 @@
   </div>
 </div>
 
-<div class="section-title tier3"><span class="dot"></span>1신호 · 검증중<span class="count">5곳</span></div>
+<div class="section-title tier3"><span class="dot"></span>3순위<span class="count">5곳</span></div>
 <div class="grid">
   <div class="card tier3" data-num="07" id="card-07">
     <div class="num">07</div>
@@ -302,7 +302,7 @@
 
   var markersByNum = {};
   var infoBox = document.getElementById('selected-info');
-  var tierLabel = { 1: '3신호 겹침', 2: '2신호 겹침', 3: '1신호 검증중' };
+  var tierLabel = { 1: '1순위', 2: '2순위', 3: '3순위' };
   var activeSectorLayers = [];
 
   function clearSectors() {
