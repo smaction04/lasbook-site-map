@@ -5,6 +5,7 @@
 <title>라스북 오프라인 매장 부지소싱 후보 11곳</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="sector_data.js"></script>
 <style>
   :root {
     --bg: #f4ecdc;
@@ -241,7 +242,7 @@
   </div>
 </div>
 
-<div class="note">지도 좌표는 각 지역 대표 지점(동/읍 행정중심)을 기준으로 한 근사치입니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
+<div class="note">카드나 핀을 클릭하면 해당 지역의 실제 행정동 경계(통계지리정보서비스 기준)가 지도에 영역으로 표시됩니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 05번(창원)은 "중동"이라는 별도 행정동이 없어 유니시티와 인접한 팔룡동 경계로 대신 표시했습니다 — 정확한 유니시티 부지 경계와는 다를 수 있습니다. 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
 
 <script>
   var map = L.map('map').setView([36.3, 127.6], 7);
@@ -295,6 +296,31 @@
   var markersByNum = {};
   var infoBox = document.getElementById('selected-info');
   var tierLabel = { 1: '3신호 겹침', 2: '2신호 겹침', 3: '1신호 검증중' };
+  var activeSectorLayers = [];
+
+  function clearSectors() {
+    activeSectorLayers.forEach(function(l) { map.removeLayer(l); });
+    activeSectorLayers = [];
+  }
+
+  function drawSectors(num) {
+    clearSectors();
+    var entries = (typeof SECTOR_DATA !== 'undefined') ? SECTOR_DATA[num] : null;
+    if (!entries) return;
+    var bounds = L.latLngBounds();
+    entries.forEach(function(entry) {
+      var multi = entry.rings.map(function(r) { return [r]; });
+      var poly = L.polygon(multi, {
+        color: entry.color,
+        weight: 2,
+        fillColor: entry.color,
+        fillOpacity: 0.22
+      }).bindTooltip(entry.label, { sticky: true, direction: 'top' }).addTo(map);
+      activeSectorLayers.push(poly);
+      bounds.extend(poly.getBounds());
+    });
+    if (bounds.isValid()) map.fitBounds(bounds, { padding: [24, 24] });
+  }
 
   function selectSpot(num) {
     var s = spots.find(function(x) { return x.num === num; });
@@ -314,9 +340,13 @@
     }
 
     var marker = markersByNum[num];
-    if (marker) {
-      map.panTo(marker.getLatLng());
-      marker.openPopup();
+    if (marker) marker.openPopup();
+
+    if (SECTOR_DATA[num]) {
+      drawSectors(num);
+    } else {
+      clearSectors();
+      if (marker) map.panTo(marker.getLatLng());
     }
   }
 
