@@ -249,7 +249,7 @@
   </div>
 </div>
 
-<div class="note">카드나 핀을 클릭하면 해당 지역의 실제 행정동 경계(통계지리정보서비스 기준)가 영역으로, <span style="color:#e8336d;font-weight:700;">●분홍 점</span>은 그 안에서 실제 가족형 상권이 확인된 구체 지점(건물·거리)이 표시됩니다 — 한 지역에 상권이 여러 곳이면 점도 여러 개입니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
+<div class="note">카드나 핀을 클릭하면 해당 지역의 실제 행정동 경계(통계지리정보서비스 기준)가 옅은 영역으로, <span style="color:#e8336d;font-weight:700;">●진한 분홍 원</span>은 실제 가족형 상권이 확인된 구체 지점을 중심으로 반경 1km를 표시합니다 — 한 지역에 상권이 여러 곳이면 원도 여러 개입니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
 
 <script>
   var map = L.map('map').setView([36.3, 127.6], 7);
@@ -337,12 +337,20 @@
     var spots2 = HOTSPOT_DATA[num];
     if (!spots2) return;
     spots2.forEach(function(h) {
+      var zone = L.circle([h.lat, h.lng], {
+        radius: 1000,
+        color: HOTSPOT_COLOR,
+        weight: 1.5,
+        fillColor: HOTSPOT_COLOR,
+        fillOpacity: 0.5
+      }).bindTooltip('📍 ' + h.name + ' 반경 1km', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
+      activeHotspotLayers.push(zone);
       var marker = L.circleMarker([h.lat, h.lng], {
-        radius: 8,
+        radius: 6,
         color: '#fff',
         weight: 2,
         fillColor: HOTSPOT_COLOR,
-        fillOpacity: 0.95
+        fillOpacity: 1
       }).bindTooltip('📍 ' + h.name, { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
       activeHotspotLayers.push(marker);
     });
