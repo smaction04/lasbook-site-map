@@ -164,13 +164,19 @@
 
 <div id="selected-info" class="empty">지도 핀이나 아래 카드를 클릭하면 선택한 위치 정보가 여기 표시됩니다.</div>
 
-<div class="section-title"><span class="dot"></span>3신호 겹침 · 최우선<span class="count">1곳</span></div>
+<div class="section-title"><span class="dot"></span>3신호 겹침 · 최우선<span class="count">2곳</span></div>
 <div class="grid">
-  <div class="card" data-num="01" id="card-01">
-    <div class="num">01</div>
-    <div class="name">경기 화성 동탄(1·2신도시)</div>
-    <div class="desc">출생아수 전국 1위(8,116명, 2024) · 학령인구 72,084명(화성시 절반 이상) · 학원가 밀집.</div>
-    <div class="signals"><span class="signal">① 출생아수 1위</span><span class="signal">② 학령인구</span><span class="signal">③ 학원가</span></div>
+  <div class="card" data-num="1-1" id="card-1-1">
+    <div class="num">1-1</div>
+    <div class="name">화성 동탄1기 신도시(동탄1·2·3동)</div>
+    <div class="desc">2007년부터 조성된 원조 동탄신도시. 화성시 출생아수 전국 1위(8,116명, 2024)·학원가 밀집 신호의 진원지.</div>
+    <div class="signals"><span class="signal">① 출생아수 1위</span><span class="signal">③ 학원가</span></div>
+  </div>
+  <div class="card" data-num="1-2" id="card-1-2">
+    <div class="num">1-2</div>
+    <div class="name">화성 동탄2기 신도시(동탄4~9동)</div>
+    <div class="desc">2015년 이후 조성된 훨씬 넓은 확장판. 학령인구 72,084명(화성시 절반 이상)이 이 권역에 집중.</div>
+    <div class="signals"><span class="signal">② 학령인구</span><span class="signal">③ 학원가</span></div>
   </div>
 </div>
 
@@ -197,13 +203,13 @@
   <div class="card tier2" data-num="05" id="card-05">
     <div class="num">05</div>
     <div class="name">경남 창원 중동(유니스퀘어)</div>
-    <div class="desc">배후 6,100세대(완판) 확정 · 단지 커뮤니티시설 키즈카페 확인, 141개 점포 스트리트몰.</div>
+    <div class="desc">배후 6,100세대(완판) 확정 · 단지 커뮤니티시설 키즈카페 확인, 141개 점포 스트리트몰. 행정동 기준 의창동(법정동 중동).</div>
     <div class="signals"><span class="signal">③ 배후세대 확정</span><span class="signal">③ 실제 키즈카페</span></div>
   </div>
   <div class="card tier2" data-num="06" id="card-06">
     <div class="num">06</div>
     <div class="name">부산 강서구 명지신도시(캐럿108)</div>
-    <div class="desc">대형 키즈카페 3곳 동시 성업 중 — 조사 전체에서 가장 강한 실제 방문 실증.</div>
+    <div class="desc">대형 키즈카페 3곳 동시 성업 중 — 조사 전체에서 가장 강한 실제 방문 실증. (명지1동 기준, 명지2동/명지오션시티는 별개 지역이라 제외)</div>
     <div class="signals"><span class="signal">③ 실제 방문상권(최강)</span></div>
   </div>
 </div>
@@ -219,7 +225,7 @@
   <div class="card tier3" data-num="08" id="card-08">
     <div class="num">08</div>
     <div class="name">광주 남구 봉선동</div>
-    <div class="desc">호남 최대 학원가 + 아파트 밀집 + 호남권 유일 교보문고 입점.</div>
+    <div class="desc">호남 최대 학원가 + 아파트 밀집 상권.</div>
     <div class="signals"><span class="signal">③ 실제 방문상권</span></div>
   </div>
   <div class="card tier3" data-num="09" id="card-09">
@@ -242,7 +248,7 @@
   </div>
 </div>
 
-<div class="note">카드나 핀을 클릭하면 해당 지역의 실제 행정동 경계(통계지리정보서비스 기준)가 지도에 영역으로 표시됩니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 05번(창원)은 "중동"이라는 별도 행정동이 없어 유니시티와 인접한 팔룡동 경계로 대신 표시했습니다 — 정확한 유니시티 부지 경계와는 다를 수 있습니다. 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
+<div class="note">카드나 핀을 클릭하면 해당 지역의 실제 행정동 경계(통계지리정보서비스 기준)가 지도에 영역으로 표시됩니다. 정확한 필지 위치·실제 매물 여부는 별도 확인이 필요합니다(이준우 대표 확인 영역). 참고: 양산 물금읍은 아동인구 전국 1위였으나 라스북 벤치마크 매장 '오슬로파크'가 이미 있어 이번 후보에서 제외했습니다.</div>
 
 <script>
   var map = L.map('map').setView([36.3, 127.6], 7);
@@ -280,14 +286,15 @@
   }
 
   var spots = [
-    { num: "01", tier: 1, name: "경기 화성 동탄(1·2신도시)", lat: 37.2010, lng: 127.0724, desc: "출생아수 전국 1위(8,116명, 2024) · 학령인구 72,084명(화성시 절반 이상) · 학원가 밀집." },
+    { num: "1-1", tier: 1, name: "화성 동탄1기 신도시(동탄1·2·3동)", lat: 37.2052, lng: 127.0687, desc: "2007년부터 조성된 원조 동탄신도시. 화성시 출생아수 전국 1위(8,116명, 2024)·학원가 밀집 신호의 진원지." },
+    { num: "1-2", tier: 1, name: "화성 동탄2기 신도시(동탄4~9동)", lat: 37.1809, lng: 127.1160, desc: "2015년 이후 조성된 훨씬 넓은 확장판. 학령인구 72,084명(화성시 절반 이상)이 이 권역에 집중." },
     { num: "02", tier: 2, name: "충남 아산 배방읍(장재리)", lat: 36.7520, lng: 127.0744, desc: "총인구 10만 돌파(2026.2) · 월드킹 천안아산점(500평 프리미엄 키즈카페) 실운영." },
     { num: "03", tier: 2, name: "경남 김해 장유3동(율하동)", lat: 35.1679, lng: 128.8208, desc: "0~14세 비율 23.8%(김해시 1위) · 율하도서관 바로 인접, 컨셉 궁합 뚜렷." },
     { num: "04", tier: 2, name: "경기 화성 봉담읍(동화리 일대)", lat: 37.1941, lng: 126.9427, desc: "아동인구(6~11세) 전국 TOP5(6,760명) · 교육특화단지 학원가 인접. [신규 재부상]" },
-    { num: "05", tier: 2, name: "경남 창원 중동(유니스퀘어)", lat: 35.2383, lng: 128.6375, desc: "배후 6,100세대(완판) 확정 · 단지 커뮤니티시설 키즈카페 확인." },
-    { num: "06", tier: 2, name: "부산 강서구 명지신도시(캐럿108)", lat: 35.1069, lng: 128.9172, desc: "대형 키즈카페 3곳 동시 성업 — 가장 강한 실제 방문 실증." },
+    { num: "05", tier: 2, name: "경남 창원 중동(유니스퀘어)", lat: 35.2635, lng: 128.6114, desc: "배후 6,100세대(완판) 확정 · 단지 커뮤니티시설 키즈카페 확인. 행정동 기준 의창동(법정동 중동)." },
+    { num: "06", tier: 2, name: "부산 강서구 명지신도시(캐럿108)", lat: 35.1119, lng: 128.9177, desc: "대형 키즈카페 3곳 동시 성업 — 가장 강한 실제 방문 실증. (명지1동 기준, 명지2동/명지오션시티는 별개 지역이라 제외)" },
     { num: "07", tier: 3, name: "인천 서구 검단신도시", lat: 37.6055, lng: 126.6769, desc: "자녀 있는 가구 비율 30.6% — 인천 타 아파트 평균의 약 2배." },
-    { num: "08", tier: 3, name: "광주 남구 봉선동", lat: 35.1250, lng: 126.9130, desc: "호남 최대 학원가 + 아파트 밀집 + 호남권 유일 교보문고 입점." },
+    { num: "08", tier: 3, name: "광주 남구 봉선동", lat: 35.1250, lng: 126.9130, desc: "호남 최대 학원가 + 아파트 밀집 상권." },
     { num: "09", tier: 3, name: "대구 수성구(범어·지산·시지동)", lat: 35.8383, lng: 128.6592, desc: "대구 대표 학군지, 무인/일반 키즈카페 다수 실운영." },
     { num: "10", tier: 3, name: "울산 남구 옥동", lat: 35.5208, lng: 129.2824, desc: "울산 최대 학원가 + 부촌 + 카페 밀집 상권." },
     { num: "11", tier: 3, name: "남양주 다산신도시 중심상업지구", lat: 37.6064, lng: 127.1649, desc: "\"구리남양주 최대 유동인구 상권\" + 대규모 학원가, 다산초 1,008명." }
