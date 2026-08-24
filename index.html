@@ -335,16 +335,24 @@
 
   function drawHotspots(num) {
     var spots2 = HOTSPOT_DATA[num];
-    if (!spots2) return;
+    var hotspotBounds = L.latLngBounds();
+    if (!spots2) return hotspotBounds;
     spots2.forEach(function(h) {
       var zone = L.circle([h.lat, h.lng], {
         radius: 500,
         color: HOTSPOT_COLOR,
         weight: 1.5,
         fillColor: HOTSPOT_COLOR,
-        fillOpacity: 0.5
+        fillOpacity: 0.35
       }).bindTooltip('📍 ' + h.name + ' 반경 500m', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
       activeHotspotLayers.push(zone);
+      var box = L.rectangle(zone.getBounds(), {
+        color: HOTSPOT_COLOR,
+        weight: 2,
+        dashArray: '6 4',
+        fill: false
+      }).bindTooltip('📦 ' + h.name + ' 상권 박스', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
+      activeHotspotLayers.push(box);
       var marker = L.circleMarker([h.lat, h.lng], {
         radius: 6,
         color: '#fff',
@@ -353,27 +361,34 @@
         fillOpacity: 1
       }).bindTooltip('📍 ' + h.name, { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
       activeHotspotLayers.push(marker);
+      hotspotBounds.extend(zone.getBounds());
     });
+    return hotspotBounds;
   }
 
   function drawSectors(num) {
     clearSectors();
     var entries = (typeof SECTOR_DATA !== 'undefined') ? SECTOR_DATA[num] : null;
-    if (!entries) return;
     var bounds = L.latLngBounds();
-    entries.forEach(function(entry) {
-      var multi = entry.rings.map(function(r) { return [r]; });
-      var poly = L.polygon(multi, {
-        color: entry.color,
-        weight: 2,
-        fillColor: entry.color,
-        fillOpacity: 0.22
-      }).bindTooltip(entry.label, { sticky: true, direction: 'top' }).addTo(map);
-      activeSectorLayers.push(poly);
-      bounds.extend(poly.getBounds());
-    });
-    drawHotspots(num);
-    if (bounds.isValid()) map.fitBounds(bounds, { padding: [24, 24] });
+    if (entries) {
+      entries.forEach(function(entry) {
+        var multi = entry.rings.map(function(r) { return [r]; });
+        var poly = L.polygon(multi, {
+          color: entry.color,
+          weight: 2,
+          fillColor: entry.color,
+          fillOpacity: 0.22
+        }).bindTooltip(entry.label, { sticky: true, direction: 'top' }).addTo(map);
+        activeSectorLayers.push(poly);
+        bounds.extend(poly.getBounds());
+      });
+    }
+    var hotspotBounds = drawHotspots(num);
+    if (hotspotBounds.isValid()) {
+      map.fitBounds(hotspotBounds, { padding: [60, 60], maxZoom: 16 });
+    } else if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [24, 24] });
+    }
   }
 
   function selectSpot(num) {
