@@ -385,7 +385,8 @@
     }
     var hotspotBounds = drawHotspots(num);
     if (hotspotBounds.isValid()) {
-      map.fitBounds(hotspotBounds, { padding: [60, 60], maxZoom: 16 });
+      map.fitBounds(hotspotBounds, { padding: [20, 20], maxZoom: 18 });
+      if (map.getZoom() < 17) map.setZoom(17);
     } else if (bounds.isValid()) {
       map.fitBounds(bounds, { padding: [24, 24] });
     }
