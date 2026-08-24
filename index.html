@@ -305,21 +305,21 @@
   ];
 
   var HOTSPOT_DATA = {
-    "1-1": [{ name: "메타폴리스 타임테라스", lat: 37.2049561, lng: 127.0692707 }],
-    "1-2": [{ name: "다이소 동탄역점(롯데백화점 인근 스트리트)", lat: 37.1958596, lng: 127.0980875 }],
-    "02": [{ name: "월드킹 천안아산점(키즈카페)", lat: 36.7974301, lng: 127.1057821 }],
-    "03": [{ name: "장유율하카페거리", lat: 35.1770304, lng: 128.808353 }],
-    "04": [{ name: "문밸런스PT&바른몸운동센터(동화리 상가)", lat: 37.2196828, lng: 126.969985 }],
-    "05": [{ name: "유니시티어반브릭스(쇼핑센터)", lat: 35.2565677, lng: 128.6248964 }],
-    "06": [{ name: "캐럿108·몬스터파크", lat: 35.0942584, lng: 128.9054484 }],
-    "07": [{ name: "다이소 인천검단신도시점", lat: 37.591359, lng: 126.7083123 }],
-    "08": [{ name: "봉선동 학원가(쌍용사거리)", lat: 35.123201, lng: 126.9130067 }],
+    "1-1": [{ name: "메타폴리스 타임테라스", lat: 37.2049561, lng: 127.0692707, bounds: [[37.2029736, 127.0673395], [37.2060243, 127.0714165]] }],
+    "1-2": [{ name: "다이소 동탄역점(롯데백화점 인근 스트리트)", lat: 37.1958596, lng: 127.0980875, bounds: [[37.1927487, 127.0941178], [37.2004403, 127.1003406]] }],
+    "02": [{ name: "월드킹 천안아산점(키즈카페)", lat: 36.7974301, lng: 127.1057821, bounds: [[36.7969404, 127.1052457], [36.7977566, 127.1063722]] }],
+    "03": [{ name: "장유율하카페거리", lat: 35.1770304, lng: 128.808353, bounds: [[35.1757851, 128.8049198], [35.1775829, 128.8111425]] }],
+    "04": [{ name: "문밸런스PT&바른몸운동센터(동화리 상가)", lat: 37.2196828, lng: 126.969985, bounds: [[37.2195675, 126.96969], [37.2199306, 126.9703069]] }],
+    "05": [{ name: "유니시티어반브릭스(쇼핑센터)", lat: 35.2565677, lng: 128.6248964, bounds: [[35.2547279, 128.6239308], [35.2583199, 128.625862]] }],
+    "06": [{ name: "캐럿108·몬스터파크", lat: 35.0942584, lng: 128.9054484, bounds: [[35.0922832, 128.9043755], [35.0962335, 128.9085598]] }],
+    "07": [{ name: "다이소 인천검단신도시점", lat: 37.591359, lng: 126.7083123, bounds: [[37.5906364, 126.7048791], [37.5916565, 126.7108336]] }],
+    "08": [{ name: "봉선동 학원가(쌍용사거리)", lat: 35.123201, lng: 126.9130067, bounds: [[35.1212967, 126.9102172], [35.1260354, 126.9156889]] }],
     "09": [
-      { name: "신사고학원 일대(범어동 학원가)", lat: 35.8592052, lng: 128.6354436 },
-      { name: "파인슐레만촌범어어학원 일대", lat: 35.865497, lng: 128.6387133 }
+      { name: "신사고학원 일대(범어동 학원가)", lat: 35.8592052, lng: 128.6354436, bounds: [[35.8568835, 128.6320104], [35.8620137, 128.6384477]] },
+      { name: "파인슐레만촌범어어학원 일대", lat: 35.865497, lng: 128.6387133, bounds: [[35.864045, 128.6368894], [35.8660448, 128.6408591]] }
     ],
-    "10": [{ name: "피자스쿨 옥동점(옥동초 학원가 상가)", lat: 35.5351674, lng: 129.2953934 }],
-    "11": [{ name: "이마트에브리데이 다산점(다산초 학원가 상가)", lat: 37.6257236, lng: 127.1544134 }]
+    "10": [{ name: "피자스쿨 옥동점(옥동초 학원가 상가)", lat: 35.5351674, lng: 129.2953934, bounds: [[35.533203, 129.2889561], [35.5378302, 129.2944278]] }],
+    "11": [{ name: "이마트에브리데이 다산점(다산초 학원가 상가)", lat: 37.6257236, lng: 127.1544134, bounds: [[37.6240921, 127.1511947], [37.6258766, 127.1566665]] }]
   };
   var HOTSPOT_COLOR = "#e8336d";
 
@@ -341,20 +341,14 @@
     var hotspotBounds = L.latLngBounds();
     if (!spots2) return hotspotBounds;
     spots2.forEach(function(h) {
-      var zone = L.circle([h.lat, h.lng], {
-        radius: 500,
+      var boxBounds = h.bounds || L.circle([h.lat, h.lng], { radius: 250 }).getBounds();
+      var box = L.rectangle(boxBounds, {
         color: HOTSPOT_COLOR,
-        weight: 1.5,
-        fillColor: HOTSPOT_COLOR,
-        fillOpacity: 0.35
-      }).bindTooltip('📍 ' + h.name + ' 반경 500m', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
-      activeHotspotLayers.push(zone);
-      var box = L.rectangle(zone.getBounds(), {
-        color: HOTSPOT_COLOR,
-        weight: 2,
+        weight: 2.5,
         dashArray: '6 4',
-        fill: false
-      }).bindTooltip('📦 ' + h.name + ' 상권 박스', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
+        fillColor: HOTSPOT_COLOR,
+        fillOpacity: 0.18
+      }).bindTooltip('📦 ' + h.name + ' 상권(네이버지도 실측 상가 밀집구역)', { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
       activeHotspotLayers.push(box);
       var marker = L.circleMarker([h.lat, h.lng], {
         radius: 6,
@@ -364,7 +358,7 @@
         fillOpacity: 1
       }).bindTooltip('📍 ' + h.name, { permanent: false, direction: 'top', className: 'hotspot-tip' }).addTo(map);
       activeHotspotLayers.push(marker);
-      hotspotBounds.extend(zone.getBounds());
+      hotspotBounds.extend(boxBounds);
     });
     return hotspotBounds;
   }
