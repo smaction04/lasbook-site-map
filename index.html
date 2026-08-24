@@ -436,6 +436,12 @@
   document.querySelectorAll('.card').forEach(function(card) {
     card.addEventListener('click', function() { selectSpot(card.dataset.num); });
   });
+
+  var urlParams = new URLSearchParams(window.location.search);
+  var autoSelect = urlParams.get('select');
+  if (autoSelect) {
+    setTimeout(function() { selectSpot(autoSelect); }, 200);
+  }
 </script>
 
 </body>
